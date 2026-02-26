@@ -1,0 +1,19 @@
+# База данных
+*.db
+cookbook.db
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+
+# Виртуальные окружения
+.venv/
+venv/
+env/
+
+# Тесты и линтеры
+.pytest_cache/
+.mypy_cache/
+.coverage
