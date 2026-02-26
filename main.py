@@ -1,3 +1,6 @@
+"""FastAPI приложение для кулинарной книги."""
+
+
 from typing import List
 
 from fastapi import Depends, FastAPI, HTTPException
@@ -8,6 +11,7 @@ import database
 import models
 import schemas
 
+
 app = FastAPI(
     title="Кулинарная книга API",
     description="API для управления рецептами кулинарной книги",
@@ -15,23 +19,29 @@ app = FastAPI(
 )
 
 
-async def get_db():
-    async with database.async_session() as session:
+async def get_db() -> AsyncSession:
+    """Получить сессию БД."""
+    async with database.AsyncSessionLocal() as session:
         yield session
 
 
-@app.get("/recipes", response_model=List[schemas.RecipeListResponse])
+@app.get(
+    "/recipes",
+    response_model=List[schemas.RecipeListResponse],
+)
 async def get_recipes(db: AsyncSession = Depends(get_db)):
     """
     Получить список всех рецептов, отсортированных по популярности и времени готовки.
 
-    - **Сортировка**: сначала по количеству просмотров (убывание), затем по времени готовки (возрастание).
+    - **Сортировка**: сначала по количеству просмотров (убывание),
+      затем по времени готовки (возрастание).
     - **Поля в ответе**: id, title, views, cooking_time.
     """
     result = await db.execute(
         select(models.Recipe).order_by(
-            desc(models.Recipe.views), models.Recipe.cooking_time
-        )
+            desc(models.Recipe.views),
+            models.Recipe.cooking_time,
+        ),
     )
     recipes = result.scalars().all()
     return recipes
@@ -81,7 +91,9 @@ async def create_recipe(
     await db.flush()  # Получаем ID рецепта до создания ингредиентов
 
     for ingredient in recipe.ingredients:
-        db_ingredient = models.Ingredient(name=ingredient.name, recipe_id=db_recipe.id)
+        db_ingredient = models.Ingredient(
+            name=ingredient.name, recipe_id=db_recipe.id
+        )
         db.add(db_ingredient)
 
     await db.commit()

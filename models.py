@@ -1,8 +1,7 @@
 """Модели БД."""
-
 from datetime import datetime, timezone
 
-from sqlalchemy import Column, ForeignKey, Integer, String, Text
+from sqlalchemy import Column, ForeignKey, Integer, String, Text, DateTime
 from sqlalchemy.orm import relationship
 
 from database import Base
