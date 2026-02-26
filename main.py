@@ -1,8 +1,12 @@
-from fastapi import FastAPI, Depends, HTTPException
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, desc
-import models, schemas, database
 from typing import List
+
+from fastapi import Depends, FastAPI, HTTPException
+from sqlalchemy import desc, select
+from sqlalchemy.ext.asyncio import AsyncSession
+
+import database
+import models
+import schemas
 
 app = FastAPI(
     title="Кулинарная книга API",

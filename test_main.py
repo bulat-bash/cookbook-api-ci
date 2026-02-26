@@ -1,12 +1,13 @@
 """Тесты для API."""
 
+from unittest.mock import AsyncMock
+
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy.ext.asyncio import AsyncSession
-from unittest.mock import AsyncMock
 
+from database import AsyncSessionLocal, Base, engine
 from main import app, get_db
-from database import engine, Base, AsyncSessionLocal
 
 
 @pytest.fixture
