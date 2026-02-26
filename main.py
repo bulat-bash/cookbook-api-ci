@@ -7,12 +7,14 @@ from typing import List
 app = FastAPI(
     title="Кулинарная книга API",
     description="API для управления рецептами кулинарной книги",
-    version="1.0.0"
+    version="1.0.0",
 )
+
 
 async def get_db():
     async with database.async_session() as session:
         yield session
+
 
 @app.get("/recipes", response_model=List[schemas.RecipeListResponse])
 async def get_recipes(db: AsyncSession = Depends(get_db)):
@@ -23,11 +25,13 @@ async def get_recipes(db: AsyncSession = Depends(get_db)):
     - **Поля в ответе**: id, title, views, cooking_time.
     """
     result = await db.execute(
-        select(models.Recipe)
-        .order_by(desc(models.Recipe.views), models.Recipe.cooking_time)
+        select(models.Recipe).order_by(
+            desc(models.Recipe.views), models.Recipe.cooking_time
+        )
     )
     recipes = result.scalars().all()
     return recipes
+
 
 @app.get("/recipes/{recipe_id}", response_model=schemas.RecipeResponse)
 async def get_recipe(recipe_id: int, db: AsyncSession = Depends(get_db)):
@@ -48,8 +52,11 @@ async def get_recipe(recipe_id: int, db: AsyncSession = Depends(get_db)):
 
     return recipe
 
+
 @app.post("/recipes", response_model=schemas.RecipeResponse, status_code=201)
-async def create_recipe(recipe: schemas.RecipeCreate, db: AsyncSession = Depends(get_db)):
+async def create_recipe(
+    recipe: schemas.RecipeCreate, db: AsyncSession = Depends(get_db)
+):
     """
     Создать новый рецепт.
 
@@ -64,7 +71,7 @@ async def create_recipe(recipe: schemas.RecipeCreate, db: AsyncSession = Depends
     db_recipe = models.Recipe(
         title=recipe.title,
         cooking_time=recipe.cooking_time,
-        description=recipe.description
+        description=recipe.description,
     )
     db.add(db_recipe)
     await db.flush()  # Получаем ID рецепта до создания ингредиентов

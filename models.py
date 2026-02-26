@@ -1,4 +1,5 @@
 """Модели БД."""
+
 from datetime import datetime, timezone
 
 from sqlalchemy import Column, ForeignKey, Integer, String, Text

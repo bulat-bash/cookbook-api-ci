@@ -1,4 +1,5 @@
 """Тесты для API."""
+
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -40,7 +41,7 @@ def test_create_recipe(client):
         "title": "Тестовый рецепт",
         "cooking_time": 30,
         "description": "Тест",
-        "ingredients": [{"name": "Мука"}]
+        "ingredients": [{"name": "Мука"}],
     }
 
     response = client.post("/recipes", json=recipe_data)
