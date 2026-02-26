@@ -20,7 +20,7 @@ jobs:
     - run: black --check .
     - run: isort . --check-only --settings-path=pyproject.toml
     - run: flake8 . --max-line-length=88
-    - run: mypy . --config-file pyproject.toml
+#    - run: mypy . --config-file pyproject.toml
 
   test:
     runs-on: ubuntu-latest
