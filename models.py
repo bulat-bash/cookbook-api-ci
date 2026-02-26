@@ -3,9 +3,10 @@
 from datetime import datetime, timezone
 
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Text
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
-from database import Base
+Base = declarative_base()
 
 
 class Recipe(Base):
