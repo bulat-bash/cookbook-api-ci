@@ -1,6 +1,5 @@
 """FastAPI приложение для кулинарной книги."""
 
-
 from typing import List
 
 from fastapi import Depends, FastAPI, HTTPException
@@ -10,7 +9,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 import database
 import models
 import schemas
-
 
 app = FastAPI(
     title="Кулинарная книга API",
@@ -91,9 +89,7 @@ async def create_recipe(
     await db.flush()  # Получаем ID рецепта до создания ингредиентов
 
     for ingredient in recipe.ingredients:
-        db_ingredient = models.Ingredient(
-            name=ingredient.name, recipe_id=db_recipe.id
-        )
+        db_ingredient = models.Ingredient(name=ingredient.name, recipe_id=db_recipe.id)
         db.add(db_ingredient)
 
     await db.commit()
